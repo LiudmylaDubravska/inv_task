@@ -28,12 +28,6 @@ public class AccountOwner {
     }
 
     @Override
-    public String toString() {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return "AccountOwner[name='" + name + "', surname='" + surname + "', dateOrBirth=" + dateFormat.format(dateOfBirth) + "]";
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
