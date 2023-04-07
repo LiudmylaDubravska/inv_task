@@ -16,6 +16,7 @@ public class Transfer {
         this.amount = amount;
     }
 
+
     public Date getCreated() {
         return new Date(created.getTime());
     }

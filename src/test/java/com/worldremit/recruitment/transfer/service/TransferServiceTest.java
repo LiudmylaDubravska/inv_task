@@ -1,6 +1,5 @@
 package com.worldremit.recruitment.transfer.service;
 
-import com.worldremit.recruitment.transfer.Error;
 import com.worldremit.recruitment.transfer.domain.Account;
 import com.worldremit.recruitment.transfer.domain.AccountOwner;
 import com.worldremit.recruitment.transfer.domain.Transfer;
@@ -10,9 +9,11 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static com.worldremit.recruitment.transfer.TestUtils.parseDate;
 import static java.time.Instant.now;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class TransferServiceTest {
     @Test
@@ -50,7 +51,22 @@ class TransferServiceTest {
         }
 
         // then
+        //
+        awaitTerminationAfterShutdown(executor);
         Assertions.assertThat(firstOwnerAccount.getBalance()).isEqualTo(initialBalance);
         Assertions.assertThat(secondOwnerAccount.getBalance()).isEqualTo(0);
+    }
+
+    private static void awaitTerminationAfterShutdown(ExecutorService threadPool) {
+        threadPool.shutdown();
+        try {
+            if (!threadPool.awaitTermination(10, TimeUnit.SECONDS)) {
+                threadPool.shutdownNow();
+            }
+        } catch (InterruptedException ex) {
+            threadPool.shutdownNow();
+            Thread.currentThread().interrupt();
+            fail("Excecuter service was not finished withing 10 seconds!");
+        }
     }
 }

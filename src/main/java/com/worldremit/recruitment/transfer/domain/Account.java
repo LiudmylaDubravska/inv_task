@@ -2,12 +2,13 @@ package com.worldremit.recruitment.transfer.domain;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Account {
     private final int number;
     private final Date created;
     private final AccountOwner owner;
-    private Integer balance = 0;
+    private AtomicLong balance = new AtomicLong(0);
 
     public Account(int number, Date created, AccountOwner owner) {
         this.number = number;
@@ -15,7 +16,7 @@ public class Account {
         this.owner = owner;
     }
 
-    public int getNumber() {
+    public long getNumber() {
         return number;
     }
 
@@ -27,16 +28,16 @@ public class Account {
         return owner;
     }
 
-    public Integer getBalance() {
-        return balance;
+    public long getBalance() {
+        return balance.get();
     }
 
-    public void deposit(final int amount) {
-        balance = balance + amount;
+    public void deposit(final long amount) {  //changed int to long
+        balance.addAndGet(amount);
     }
 
     public void withdraw(final int amount) {
-        balance = balance - amount;
+        balance.addAndGet(-amount);
     }
 
     @Override
@@ -47,6 +48,16 @@ public class Account {
         return number == account.number &&
                created.equals(account.created) &&
                owner.equals(account.owner);
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "number=" + number +
+                ", created=" + created +
+                ", owner=" + owner +
+                ", balance=" + balance +
+                '}';
     }
 
     @Override

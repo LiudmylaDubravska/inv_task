@@ -14,7 +14,7 @@ class AccountTest {
         // given
         final AccountOwner testOwner = new AccountOwner("Mark", "Taylor", parseDate("1962-05-10"));
         final Account account = new Account(123456789, Date.from(now()), testOwner);
-        final int initialBalance = 1000;
+        final long initialBalance = 1000;
         account.deposit(initialBalance);
 
         // when

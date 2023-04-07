@@ -30,13 +30,28 @@ public class AccountOwner {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof AccountOwner)) return false;
         AccountOwner that = (AccountOwner) o;
-        return dateOfBirth.equals(that.dateOfBirth);
+        return Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(dateOfBirth, that.dateOfBirth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateOfBirth);
+        return Objects.hash(name, surname, dateOfBirth);
+    }
+
+    private String formatDatetoString(Date date){
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = sm.format(dateOfBirth);
+             return strDate;
+    }
+    @Override
+    public String toString() {
+
+            return "AccountOwner(" +
+                    "name='" + name + '\'' +
+                    ", surname='" + surname + '\'' +
+                    ", dateOfBirth=" + formatDatetoString(dateOfBirth) +
+                    ')';
     }
 }
